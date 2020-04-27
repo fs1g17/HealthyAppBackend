@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="jackcess-3.0.1">
+  <library name="log4j-1.2.17">
     <CLASSES>
-      <root url="jar://$USER_HOME$/IP/jackcess-3.0.1.jar!/" />
+      <root url="jar://$USER_HOME$/Documents/DEPENDENCIES/jars/log4j-1.2.17.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

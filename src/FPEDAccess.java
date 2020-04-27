@@ -9,8 +9,10 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class FPEDAccess {
-    private String pathOfFNDDS = "C:/Users/PEEPEEPOOPOO/IP/FPED.mdb";
+    //private String pathOfFNDDS = "C:/Users/PEEPEEPOOPOO/IP/FPED.mdb";
     //private String pathOfFNDDS = "H:/IP_resources/current/FPED.mdb";
+    private String pathOfFNDDS = "/usr/local/tomcat/db/FPED.mdb";
+
     private static final String FOODCODE = "FOODCODE";
     private static final String F_CITMLB = "F_CITMLB";
     private static final String F_OTHER  = "F_OTHER";

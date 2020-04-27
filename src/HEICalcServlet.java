@@ -5,8 +5,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 
 @WebServlet(name = "HEICalcServlet")
 public class HEICalcServlet extends HttpServlet {
@@ -21,6 +20,7 @@ public class HEICalcServlet extends HttpServlet {
         String query = request.getQueryString();
         int userID = getUserID(query);
         String date = getUserDate(query);
+        System.out.println("userID = " + userID + " and date = " + date);
         JSONObject HEIScore = HEICalculator.getHEIScoreForUserByDate(userID,date);
 
         try (PrintWriter writer = response.getWriter()) {

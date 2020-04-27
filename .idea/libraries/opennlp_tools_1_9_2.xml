@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="opennlp-tools-1.9.2">
     <CLASSES>
-      <root url="jar://$USER_HOME$/IP/opennlp-tools-1.9.2.jar!/" />
+      <root url="jar://$USER_HOME$/Documents/DEPENDENCIES/jars/opennlp-tools-1.9.2.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

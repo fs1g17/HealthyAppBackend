@@ -19,7 +19,7 @@ public class TestServlet extends javax.servlet.http.HttpServlet {
         String hardcoded = "{\"total_fruits\": \"80\", \"whole_fruits\": \"90\", \"total_vegies\": \"75\", \"greens_beans\": \"85\", " +
                 "\"whole_grains\": \"75\", \"dairy_things\": \"69\", \"protein_food\": \"65\", \"seas_plan_pr\": \"80\"," +
                 "\"fatty_acids\": \"74\", \"refined_grain\": \"60\", \"estimated_sodium\": \"62\", \"actual_sodium\": \"67\"," +
-                "\"added_sugars\": \"81\", \"saturated_fats\": \"95-20\"}";
+                "\"added_sugars\": \"81\", \"saturated_fats\": \"95\"}";
         //JSONObject hardcodedJSON = new JSONObject(hardcoded);
 
         try (PrintWriter writer = response.getWriter()) {

@@ -13,11 +13,15 @@ public class HEICalculator {
 
     private static void connect() {
         //String url = "jdbc:sqlite:H:/sqlite/test.db";
-        String url = "jdbc:sqlite:C:/sqlite/test.db";
+        //String url = "jdbc:sqlite:C:/sqlite/test.db";
+        String url = "jdbc:sqlite:/usr/local/tomcat/db/test.db";
+
         try {
+            //Class.forName("org.sqlite.JDBC");
             conn = DriverManager.getConnection(url);
+            System.out.println("connection established successfully!");
         } catch (SQLException e) {
-            System.out.println("coudlnt connect to the database!!!");
+            System.out.println("coudlnt connect to the database!!!" + e.getMessage());
         }
     }
 
@@ -29,7 +33,13 @@ public class HEICalculator {
 
             String sql = "SELECT * FROM DateFoodSetNut WHERE user_id = " + user_id + " AND date = '" + date + "';";
             ResultSet rs = stmt.executeQuery(sql);
-            FNDDSAccess FNDDS = new FNDDSAccess();
+            FNDDSAccess FNDDS = null;
+            try{
+                FNDDS = new FNDDSAccess();
+                System.out.println("connected to the FNDDS database");
+            } catch (IOException e){
+                System.out.println("couldn't connect to FNDDS database");
+            }
 
             //ArrayList<Integer> foodCodes = new ArrayList<>();
             HashMap<Integer,int[]> foodCodesAndNutValue = new HashMap<>();
@@ -82,9 +92,10 @@ public class HEICalculator {
             return HEI;
 
         } catch (SQLException e) {
+            System.out.println("SQLException " + e.getMessage());
             e.printStackTrace();
         } catch (IOException e){
-            System.out.println("couldn't make MDBAccess instance");
+            System.out.println("couldn't make MDBAccess instance " + e.getMessage());
         }
         return null;
     }

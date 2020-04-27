@@ -8,8 +8,10 @@ import java.util.HashMap;
 import org.apache.commons.text.similarity.*;
 
 public class FNDDSAccess {
-    private String pathOfFNDDS = "C:/Users/PEEPEEPOOPOO/IP/FNDDS.mdb";
+    //private String pathOfFNDDS = "C:/Users/PEEPEEPOOPOO/IP/FNDDS.mdb";
     //private String pathOfFNDDS = "H:/IP_resources/current/FNDDS.mdb";
+    private String pathOfFNDDS = "/usr/local/tomcat/db/FNDDS.mdb";
+
     private static final String foodCodeCol = "Food code";
     private static final String nutCodeCol = "Nutrient code";
     private static final String nutValCol = "Nutrient value";
@@ -30,33 +32,12 @@ public class FNDDSAccess {
 
     protected static Connection conn;
 
-    public static void main(String[] args){
-        Preprocessor pp = new Preprocessor();
-        String one = pp.TESTFNDDSInput("Bread - Whole-wheat, 2 oz");
-        String two = pp.TESTFNDDSInput("Industrial oil as ingredient in food");
-        System.out.println(one);
-        System.out.println(two);
-        JaccardSimilarity jd = new JaccardSimilarity();
-        double sim = jd.apply(one,two);
-        System.out.println(sim);
-    }
-
     public FNDDSAccess() throws IOException {
-        //org.apache.log4j.BasicConfigurator.configure();
+        org.apache.log4j.BasicConfigurator.configure();
         AddDesc = DatabaseBuilder.open(new File(pathOfFNDDS)).getTable("AddFoodDesc");
         FNDDSNutVal = DatabaseBuilder.open(new File(pathOfFNDDS)).getTable("FNDDSNutVal");
         MainFoodDescTable = DatabaseBuilder.open(new File(pathOfFNDDS)).getTable("MainFoodDesc");
         preprocessor = new Preprocessor();
-    }
-
-    protected static void connect() {
-        String url = "jdbc:sqlite:C:/sqlite/test.db";
-        try {
-            conn = DriverManager.getConnection(url);
-            //System.out.println("connection to database established");
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
     }
 
     //  {match,foodCode,WWEIACode}
