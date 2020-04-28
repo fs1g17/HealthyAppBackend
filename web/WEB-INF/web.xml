@@ -24,4 +24,14 @@
         <url-pattern>/HEICalc</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>IdentityServlet</servlet-name>
+        <servlet-class>IdentityServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>IdentityServlet</servlet-name>
+        <url-pattern>/getNewUserID</url-pattern>
+    </servlet-mapping>
+
 </web-app>

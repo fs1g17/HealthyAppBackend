@@ -25,7 +25,7 @@ public class HEICalcServlet extends HttpServlet {
 
         try (PrintWriter writer = response.getWriter()) {
             if(HEIScore == null){
-                writer.println("{\"you\": \"retard\"}");
+                writer.println("{\"this\": \"failed\"}");
             } else {
                 writer.println(HEIScore.toString());
             }

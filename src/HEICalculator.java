@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class HEICalculator {
-    private static Connection conn;
+    static Connection conn;
 
-    private static void connect() {
+    static void connect() {
         //String url = "jdbc:sqlite:H:/sqlite/test.db";
         //String url = "jdbc:sqlite:C:/sqlite/test.db";
         String url = "jdbc:sqlite:/usr/local/tomcat/db/test.db";
@@ -23,6 +23,33 @@ public class HEICalculator {
         } catch (SQLException e) {
             System.out.println("coudlnt connect to the database!!!" + e.getMessage());
         }
+    }
+
+    public static String getNewUserID(){
+        connect();
+        Statement stmt = null;
+        ResultSet rs = null;
+        int answer = -1;
+
+        try{
+            stmt = conn.createStatement();
+        } catch(SQLException e){
+            System.out.println("failed to create statement");
+        }
+
+        String sql = "SELECT * FROM FoodDiary WHERE entry_id = -1;";
+        try{
+            rs = stmt.executeQuery(sql);
+            answer = rs.getInt("user_id")+1;
+            System.out.println(answer);
+
+            //String update = "UPDATE FoodDiary SET user_id = 9897 WHERE entry_id = -1;";
+            //stmt.executeUpdate(update);
+        } catch(SQLException e){
+            System.out.println("failed to execute query");
+        }
+
+        return "{\"user_id\": \"" + answer + "\"}";
     }
 
     public static JSONObject getHEIScoreForUserByDate(int userID, String date){
