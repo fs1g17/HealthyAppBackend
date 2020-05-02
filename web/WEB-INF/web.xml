@@ -34,4 +34,24 @@
         <url-pattern>/getNewUserID</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>StringTestServlet</servlet-name>
+        <servlet-class>StringTestServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>StringTestServlet</servlet-name>
+        <url-pattern>/getStringHEI</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UploadServlet</servlet-name>
+        <servlet-class>UploadServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>UploadServlet</servlet-name>
+        <url-pattern>/upload</url-pattern>
+    </servlet-mapping>
+
 </web-app>

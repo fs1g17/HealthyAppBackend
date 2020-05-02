@@ -28,6 +28,8 @@ public class HEICalcServlet extends HttpServlet {
                 writer.println("{\"this\": \"failed\"}");
             } else {
                 writer.println(HEIScore.toString());
+                writer.flush();
+                writer.close();
             }
         }
     }

@@ -101,20 +101,20 @@ public class HEICalculator {
 
 
             JSONObject HEI = new JSONObject(components);
-            HEI.put("total_fruits",HEIScore[0]);
-            HEI.put("whole_fruits",HEIScore[1]);
-            HEI.put("total_vegies",HEIScore[2]);
-            HEI.put("greens_beans",HEIScore[3]);
-            HEI.put("whole_grains",HEIScore[4]);
-            HEI.put("dairy_things",HEIScore[5]);
-            HEI.put("protein_food",HEIScore[6]);
-            HEI.put("seas_plan_pr",HEIScore[7]);
-            HEI.put("fatty_acids",HEIScore[8]);
-            HEI.put("refined_grain",HEIScore[9]);
-            HEI.put("estimated_sodium",HEIScore[10]);
-            HEI.put("actual_sodium",HEIScore[11]);
-            HEI.put("added_sugars",HEIScore[12]);
-            HEI.put("saturated_fats",HEIScore[13]);
+            HEI.put("total_fruits",(int)HEIScore[0]);
+            HEI.put("whole_fruits",(int)HEIScore[1]);
+            HEI.put("total_vegies",(int)HEIScore[2]);
+            HEI.put("greens_beans",(int)HEIScore[3]);
+            HEI.put("whole_grains",(int)HEIScore[4]);
+            HEI.put("dairy_things",(int)HEIScore[5]);
+            HEI.put("protein_food",(int)HEIScore[6]);
+            HEI.put("seas_plan_pr",(int)HEIScore[7]);
+            HEI.put("fatty_acids",(int)HEIScore[8]);
+            HEI.put("refined_grain",(int)HEIScore[9]);
+            HEI.put("estimated_sodium",(int)HEIScore[10]);
+            HEI.put("actual_sodium",(int)HEIScore[11]);
+            HEI.put("added_sugars",(int)HEIScore[12]);
+            HEI.put("saturated_fats",(int)HEIScore[13]);
 
             return HEI;
 
