@@ -64,7 +64,7 @@ public class FNDDSAccess {
                 procInput = userInput;
                 foodDescription = preprocessor.TESTFNDDSInput(foodDescription);
 
-                System.out.println("FW: " + procInput + "              " + foodDescription);
+                //System.out.println("FW: " + procInput + "              " + foodDescription);
 
                 int currDist = FuzzySearch.tokenSortPartialRatio(procInput,foodDescription);
 

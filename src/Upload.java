@@ -27,6 +27,7 @@ public class Upload {
             Statement stmt = conn.createStatement();
             Statement insert = conn.createStatement();
 
+            /*
             //get highest available row_id value, stored in this special entry
             String sql = "SELECT * FROM DateFoodSetNut WHERE user_id = -1;";
             ResultSet rs = stmt.executeQuery(sql);
@@ -45,6 +46,14 @@ public class Upload {
             //deleting outdated entries
             String delete = "DELETE FROM DateFoodSetNut WHERE user_id = " + userID + " AND date = '" + date + "';";
             stmt.executeUpdate(delete);
+             */
+
+            String delete = "DELETE FROM DateFoodSetNut WHERE user_id = " + userID + " AND date = '" + date + "';";
+            stmt.executeUpdate(delete);
+
+            String sql = "SELECT MAX(row_id) FROM DateFoodSetNut";
+            ResultSet rs = stmt.executeQuery(sql);
+            int rowIDStart = rs.getInt(1)+1;
 
 
             //INSERTING NEW VALUES
@@ -88,8 +97,10 @@ public class Upload {
                 }
             }
 
-            rowIDStart *= -1;
-            String updateMaxValue = "UPDATE DateFoodSetNut SET row_id = " + rowIDStart + " WHERE user_id = -1;";
+            conn.close();
+
+            //rowIDStart *= -1;
+            //String updateMaxValue = "UPDATE DateFoodSetNut SET row_id = " + rowIDStart + " WHERE user_id = -1;";
 
             //TODO: enable this
             //insert.executeUpdate(updateMaxValue);
