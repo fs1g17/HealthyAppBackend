@@ -4,11 +4,11 @@ import me.xdrop.fuzzywuzzy.FuzzySearch;
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
 import org.apache.commons.text.similarity.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class FNDDSAccess {
     private String pathOfFNDDS = "/usr/local/tomcat/db/FNDDS.mdb";
@@ -37,6 +37,21 @@ public class FNDDSAccess {
         FNDDSNutVal = DatabaseBuilder.open(new File(pathOfFNDDS)).getTable("FNDDSNutVal");
         MainFoodDescTable = DatabaseBuilder.open(new File(pathOfFNDDS)).getTable("MainFoodDesc");
         preprocessor = new Preprocessor();
+    }
+
+    protected JSONArray getFoodItems(ArrayList<Integer> foodCodes){
+        JSONArray foodList = new JSONArray();
+        try{
+            for(Integer foodCode : foodCodes){
+                Row row = CursorBuilder.findRow(MainFoodDescTable, Collections.singletonMap("Food code",foodCode));
+                JSONObject foodItem = new JSONObject();
+                foodItem.put("food_item",row.getString(mainFoodDescCol));
+                foodList.put(foodItem);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return foodList;
     }
 
     protected String[] custom(String userInput){

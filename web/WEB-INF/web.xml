@@ -54,4 +54,14 @@
         <url-pattern>/upload</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>RecommenderServlet</servlet-name>
+        <servlet-class>RecommenderServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>RecommenderServlet</servlet-name>
+        <url-pattern>/recommend</url-pattern>
+    </servlet-mapping>
+
 </web-app>

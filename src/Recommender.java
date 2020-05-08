@@ -1,3 +1,6 @@
+import org.json.JSONArray;
+
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +19,9 @@ public class Recommender {
         }
     }
 
-    static void run(int userIDOfInterest){
+    static JSONArray run(int userIDOfInterest){
         connect();
+        JSONArray foodList = null;
         try{
             Statement stmt = conn.createStatement();
             String sql = "SELECT * FROM UserVector;";
@@ -44,20 +48,32 @@ public class Recommender {
             ArrayList<Integer> foodCodesUserMayLike = new ArrayList<>();
 
             for(User user : usersInCluster){
-                try{
-                    String selectFoods = "SELECT food_code FROM FoodSetNut WHERE user_id = "+ user.getUserID() + ";";
-                    ResultSet foodSet = stmt.executeQuery(selectFoods);
+                while(foodCodesUserMayLike.size() < 10){
+                    try{
+                        String selectFoods = "SELECT food_code FROM FoodSetNut WHERE user_id = "+ user.getUserID() + ";";
+                        ResultSet foodSet = stmt.executeQuery(selectFoods);
 
-                    while(foodSet.next()){
-                        foodCodesUserMayLike.add(foodSet.getInt(1));
-                        System.out.println("added food code: " + foodSet.getInt(1));
+                        while(foodSet.next() && foodCodesUserMayLike.size() < 10){
+                            foodCodesUserMayLike.add(foodSet.getInt(1));
+                            System.out.println("added food code: " + foodSet.getInt(1));
+                        }
+                    } catch (SQLException e){
+                        System.out.println("failed to retrieve food set for user " + user.getUserID());
                     }
-                } catch (SQLException e){
-                    System.out.println("failed to retrieve food set for user " + user.getUserID());
                 }
+            }
+
+            try{
+                FNDDSAccess FNDDS = new FNDDSAccess();
+                foodList = FNDDS.getFoodItems(foodCodesUserMayLike);
+                System.out.println(foodList.toString());
+
+            } catch (IOException e){
+                System.out.println("couldn't initialise FNDDS for food code lookup");
             }
         } catch (SQLException e){
             System.out.println("E");
         }
+        return foodList;
     }
 }
