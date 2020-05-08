@@ -11,8 +11,6 @@ import java.util.Stack;
 import org.apache.commons.text.similarity.*;
 
 public class FNDDSAccess {
-    //private String pathOfFNDDS = "C:/Users/PEEPEEPOOPOO/IP/FNDDS.mdb";
-    //private String pathOfFNDDS = "H:/IP_resources/current/FNDDS.mdb";
     private String pathOfFNDDS = "/usr/local/tomcat/db/FNDDS.mdb";
 
     private static final String foodCodeCol = "Food code";
@@ -32,8 +30,6 @@ public class FNDDSAccess {
     private Table FNDDSNutVal;
     private Table MainFoodDescTable;
     private Preprocessor preprocessor;
-
-    protected static Connection conn;
 
     public FNDDSAccess() throws IOException {
         org.apache.log4j.BasicConfigurator.configure();
