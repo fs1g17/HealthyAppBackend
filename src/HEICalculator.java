@@ -73,7 +73,8 @@ public class HEICalculator {
             ArrayList<Integer> WWEIACodes = new ArrayList<>();
 
             while(rs.next()){
-                String[] codesForFoodItem = FNDDS.fuzzyWuzzy(rs.getString("food_item"));
+                //String[] codesForFoodItem = FNDDS.fuzzyWuzzy(rs.getString("food_item"));
+                String[] codesForFoodItem = FNDDS.custom(rs.getString("food_item"));
                 int foodCode = Integer.parseInt(codesForFoodItem[1]);
                 String nutrition = rs.getString("food_nutrition");
 

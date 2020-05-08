@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.*;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Stack;
+
 import org.apache.commons.text.similarity.*;
 
 public class FNDDSAccess {
@@ -38,6 +41,103 @@ public class FNDDSAccess {
         FNDDSNutVal = DatabaseBuilder.open(new File(pathOfFNDDS)).getTable("FNDDSNutVal");
         MainFoodDescTable = DatabaseBuilder.open(new File(pathOfFNDDS)).getTable("MainFoodDesc");
         preprocessor = new Preprocessor();
+    }
+
+    protected String[] custom(String userInput){
+        String match = null;
+        String matchCode = null;
+        String WWEIACode = null;
+        try{
+            Cursor cursor = MainFoodDescTable.getDefaultCursor();
+            cursor.beforeFirst();
+
+            double dist = Integer.MAX_VALUE;
+            while(cursor.moveToNextRow()){
+                Row row = cursor.getCurrentRow();
+                String foodDescription = row.getString(mainFoodDescCol);
+                int foodCode = row.getInt(foodCodeCol);
+                String addDesc = getAddFoodDesc(foodCode);
+                foodDescription += " " + addDesc;
+
+                ///*
+                userInput = preprocessor.TESTUserInput(userInput);
+                foodDescription = preprocessor.TESTFNDDSInput(foodDescription);
+
+                String[] UIArr;
+                if(userInput.contains(" ")){
+                    UIArr = userInput.split(" ");
+                } else {
+                    UIArr = new String[]{userInput};
+                }
+
+                String[] FDArr;
+                if(foodDescription.contains(" ")){
+                    FDArr = foodDescription.split(" ");
+                } else {
+                    FDArr = new String[]{foodDescription};
+                }
+
+                Stack<String> stack = new Stack<>();
+                HashMap<String[],Integer> closestMatches = new HashMap<>();
+                if(UIArr.length < FDArr.length){
+                    for(String s : FDArr){
+                        stack.push(s);
+                    }
+                    for(String s : UIArr){
+                        String[] closest = new String[]{s,null};
+                        closestMatches.put(closest,Integer.MAX_VALUE);
+                    }
+                } else {
+                    for(String s : UIArr){
+                        stack.push(s);
+                    }
+                    for(String s : FDArr){
+                        String[] closest = new String[]{s,null};
+                        closestMatches.put(closest,Integer.MAX_VALUE);
+                    }
+                }
+
+                int stackSize = stack.size();
+
+                for(int i=0; i<stack.size(); i++){
+                    String target = stack.pop();
+                    for(Map.Entry<String[],Integer> entry : closestMatches.entrySet()){
+                        String source = entry.getKey()[0];
+                        int currDis = entry.getValue();
+                        int levDis = LevDis.calculate(source,target);
+                        if(levDis < currDis){
+                            String oldValue = entry.getKey()[1];
+                            if(oldValue != null){
+                                stack.push(oldValue);
+                            }
+                            entry.getKey()[1] = target;
+                            entry.setValue(levDis);
+                        }
+                    }
+                }
+
+                int totalDistance = 0;
+                for(Map.Entry<String[],Integer> entry : closestMatches.entrySet()){
+                    String source = entry.getKey()[0];
+                    String target = entry.getKey()[1];
+                    int distance = entry.getValue();
+                    totalDistance += distance;
+
+                    //System.out.println(source + " - " + target + " DIST: " + distance);
+                }
+                //System.out.println("TOTAL DISTANCE: " + totalDistance);
+
+                if(totalDistance < dist){
+                    dist = totalDistance;
+                    match = row.getString(mainFoodDescCol);
+                    matchCode = foodCode + "";
+                    WWEIACode = row.getInt(this.WWEIACode)+"";
+                }
+            }
+        } catch (IOException e){
+            System.out.println("error: couldn't read FNDDS");
+        }
+        return new String[]{match,matchCode,WWEIACode};
     }
 
     //  {match,foodCode,WWEIACode}

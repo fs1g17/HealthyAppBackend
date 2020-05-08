@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="lucene:lucene:1.4.3" type="repository">
+    <properties maven-id="lucene:lucene:1.4.3" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/lucene/lucene/1.4.3/lucene-1.4.3.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
