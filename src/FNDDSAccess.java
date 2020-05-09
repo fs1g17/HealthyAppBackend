@@ -39,20 +39,37 @@ public class FNDDSAccess {
         preprocessor = new Preprocessor();
     }
 
-    protected JSONArray getFoodItems(ArrayList<Integer> foodCodes){
+    ///*
+    protected JSONArray getFoodItems(HashSet<Integer> foodCodes){
         JSONArray foodList = new JSONArray();
         try{
-            for(Integer foodCode : foodCodes){
-                Row row = CursorBuilder.findRow(MainFoodDescTable, Collections.singletonMap("Food code",foodCode));
-                JSONObject foodItem = new JSONObject();
-                foodItem.put("food_item",row.getString(mainFoodDescCol));
-                foodList.put(foodItem);
+            Iterator<Integer> itr = foodCodes.iterator();
+            while(itr.hasNext()){
+                int foodCode = itr.next();
+                Row row = CursorBuilder.findRow(MainFoodDescTable, Collections.singletonMap("Food code",foodCode+""));
+                JSONObject jo = new JSONObject();
+                jo.put("food_item",row.getString(mainFoodDescCol));
+                jo.put("food_code",row.getInt(foodCodeCol));
+                jo.put("WWEIA_code",row.getInt(WWEIACode));
+                foodList.put(jo);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
         return foodList;
     }
+    // */
+
+    /*
+    protected void getFoodItems(HashSet<Integer> foodCodes){
+        Iterator<Integer> itr = foodCodes.iterator();
+        while(itr.hasNext()){
+            int foodCode = itr.next();
+            System.out.println("THIIIIIIIIS HERE : " + foodCode);
+        }
+    }
+
+     */
 
     protected String[] custom(String userInput){
         String match = null;

@@ -17,11 +17,16 @@ public class RecommenderServlet extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
+        System.out.println("poopy pants");
+
         try{
             PrintWriter writer = response.getWriter();
             try{
                 int userID = Integer.parseInt(request.getParameter("userID"));
-                JSONArray foodList = Recommender.run(200);
+                String date = request.getParameter("date");
+                System.out.println("RUNNING RECOMMENDER FOR user_id: " + userID + " AND date: " + date);
+                Recommender recommender = new Recommender();
+                JSONArray foodList = recommender.run(userID,date);
                 writer.println(foodList.toString());
                 writer.flush();
                 writer.close();

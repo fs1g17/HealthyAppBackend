@@ -49,18 +49,37 @@ public class KMeans {
         }
 
         ArrayList<User> usersOfInterest = null;
-        User delete = null;
+        User userOfInterest = null;
         for(Map.Entry<double[],ArrayList<User>> cluster : clusters.entrySet()){
             ArrayList<User> usersInCluster = cluster.getValue();
             for(User user : usersInCluster){
                 if(user.getUserID() == userID){
                     usersOfInterest = usersInCluster;
-                    delete = user;
+                    userOfInterest = user;
                 }
             }
         }
-        usersOfInterest.remove(delete);
-        return usersOfInterest;
+        usersOfInterest.remove(userOfInterest);
+
+        if(usersOfInterest.size() <= 3){
+            return usersOfInterest;
+        } else {
+            ArrayList<User> closestThreeUsers = new ArrayList<>();
+            for(int i=0; i<3; i++){
+                double distance = Double.MAX_VALUE;
+                User closest = null;
+                for(User user : usersOfInterest){
+                    double currDist = euclideanDistance(user.getVector(),userOfInterest.getVector());
+                    if(currDist<distance){
+                        distance = currDist;
+                        closest = user;
+                    }
+                }
+                closestThreeUsers.add(closest);
+                usersOfInterest.remove(closest);
+            }
+            return closestThreeUsers;
+        }
     }
 
     static double[] randomCentroid(int cardinality, int min, int max){

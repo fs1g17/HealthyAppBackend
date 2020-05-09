@@ -7,6 +7,8 @@ import java.sql.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 
 public class HEICalculator {
     static Connection conn;
@@ -126,5 +128,56 @@ public class HEICalculator {
             System.out.println("couldn't make MDBAccess instance " + e.getMessage());
         }
         return null;
+    }
+
+    //returns JSONArray of JSONObjects: {"food_code":x,"hei_score":{"cat1":val1,"cat2":val2,...,"cat13":val13}}
+    public static JSONArray getHEIScoreOfFoodItemsByFoodCode(HashSet<Integer> foodCodes){
+        JSONArray heiScoresOfFoods = new JSONArray();
+        try{
+            FNDDSAccess FNDDS = new FNDDSAccess();
+            FPEDAccess FPED = new FPEDAccess();
+            Iterator<Integer> itr = foodCodes.iterator();
+
+            while(itr.hasNext()){
+                int foodCode = itr.next();
+                HashMap<Integer,int[]> foodCodesAndNutValue = new HashMap<>();
+                double[] nutInfo = FNDDS.getInfo(foodCode);
+                double sodium = nutInfo[0];
+                double kcalFromFNDDS = nutInfo[2];
+
+                int[] info = new int[]{(int)kcalFromFNDDS,(int)sodium};
+                foodCodesAndNutValue.put(foodCode,info);
+                double[] HEIScore = FPED.calculateHEI(foodCodesAndNutValue);
+
+                String[] components = new String[]{"total_fruits","whole_fruits","total_vegies","greens_beans",
+                        "whole_grains","dairy_things","protein_food","seas_plan_pr",
+                        "fatty_acids","refined_grain","estimated_sodium","actual_sodium",
+                        "added_sugars","saturated_fats"};
+
+                JSONObject HEI = new JSONObject(components);
+                HEI.put("total_fruits",(int)HEIScore[0]);
+                HEI.put("whole_fruits",(int)HEIScore[1]);
+                HEI.put("total_vegies",(int)HEIScore[2]);
+                HEI.put("greens_beans",(int)HEIScore[3]);
+                HEI.put("whole_grains",(int)HEIScore[4]);
+                HEI.put("dairy_things",(int)HEIScore[5]);
+                HEI.put("protein_food",(int)HEIScore[6]);
+                HEI.put("seas_plan_pr",(int)HEIScore[7]);
+                HEI.put("fatty_acids",(int)HEIScore[8]);
+                HEI.put("refined_grain",(int)HEIScore[9]);
+                HEI.put("estimated_sodium",(int)HEIScore[10]);
+                HEI.put("actual_sodium",(int)HEIScore[11]);
+                HEI.put("added_sugars",(int)HEIScore[12]);
+                HEI.put("saturated_fats",(int)HEIScore[13]);
+
+                JSONObject foodItem = new JSONObject();
+                foodItem.put("food_code",foodCode);
+                foodItem.put("hei_score",HEI);
+                heiScoresOfFoods.put(foodItem);
+            }
+        } catch (IOException e){
+            System.out.println();
+        }
+        return heiScoresOfFoods;
     }
 }
