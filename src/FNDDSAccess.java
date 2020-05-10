@@ -32,7 +32,7 @@ public class FNDDSAccess {
     private Preprocessor preprocessor;
 
     public FNDDSAccess() throws IOException {
-        org.apache.log4j.BasicConfigurator.configure();
+        //org.apache.log4j.BasicConfigurator.configure();
         AddDesc = DatabaseBuilder.open(new File(pathOfFNDDS)).getTable("AddFoodDesc");
         FNDDSNutVal = DatabaseBuilder.open(new File(pathOfFNDDS)).getTable("FNDDSNutVal");
         MainFoodDescTable = DatabaseBuilder.open(new File(pathOfFNDDS)).getTable("MainFoodDesc");
@@ -44,16 +44,22 @@ public class FNDDSAccess {
         JSONArray foodList = new JSONArray();
         try{
             Iterator<Integer> itr = foodCodes.iterator();
+            int foodCode = -1;
             while(itr.hasNext()){
-                int foodCode = itr.next();
-                Row row = CursorBuilder.findRow(MainFoodDescTable, Collections.singletonMap("Food code",foodCode+""));
-                JSONObject jo = new JSONObject();
-                jo.put("food_item",row.getString(mainFoodDescCol));
-                jo.put("food_code",row.getInt(foodCodeCol));
-                jo.put("WWEIA_code",row.getInt(WWEIACode));
-                foodList.put(jo);
+                try{
+                    foodCode = itr.next();
+                    Row row = CursorBuilder.findRow(MainFoodDescTable, Collections.singletonMap("Food code",foodCode+""));
+                    JSONObject jo = new JSONObject();
+                    jo.put("food_item",row.getString(mainFoodDescCol));
+                    jo.put("food_code",row.getInt(foodCodeCol));
+                    jo.put("WWEIA_code",row.getInt(WWEIACode));
+                    foodList.put(jo);
+                } catch (Exception e){
+                    System.out.println("failed to locate description of food code: " + foodCode);
+                    System.out.println("moving on");
+                }
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return foodList;
